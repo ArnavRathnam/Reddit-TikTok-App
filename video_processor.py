@@ -4,8 +4,13 @@ try:
     from moviepy import VideoFileClip, AudioFileClip, CompositeVideoClip
     MOVIEPY_AVAILABLE = True
 except ImportError:
-    print("MoviePy not available")
-    MOVIEPY_AVAILABLE = False
+    try:
+        # Fallback for older MoviePy versions
+        from moviepy.editor import VideoFileClip, AudioFileClip, CompositeVideoClip
+        MOVIEPY_AVAILABLE = True
+    except ImportError:
+        print("MoviePy not available")
+        MOVIEPY_AVAILABLE = False
 
 
 class VideoProcessor:
@@ -185,7 +190,10 @@ def test_video_processor():
         
         # Test with dummy audio file (create a short silent audio)
         try:
-            from moviepy.editor import AudioClip
+            try:
+                from moviepy import AudioClip
+            except ImportError:
+                from moviepy.editor import AudioClip
             
             # Create 5-second silent audio for testing
             silent_audio = AudioClip(make_frame=lambda t: [0, 0], duration=5, fps=44100)

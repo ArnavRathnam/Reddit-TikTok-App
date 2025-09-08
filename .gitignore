@@ -87,6 +87,9 @@ ready_for_upload/
 uploads/
 output/
 
+# Generated videos directory
+videos/
+
 # Test files
 test_*
 *_test.*
